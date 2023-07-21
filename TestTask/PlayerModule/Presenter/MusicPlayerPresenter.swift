@@ -15,8 +15,7 @@ protocol MusicPlayerViewPresenterProtocol: AnyObject {
     init(view: MusicPlayerViewProtocol, songData: Song, songIndex: Int)
     
     func playPauseButtonPressed(completion: @escaping (String) -> Void)
-    func forwardButtonPressed(completion: @escaping (Song) -> Void)
-    func backButtonPressed(completion: @escaping (Song) -> Void)
+    func changeTrack(forward: Bool, completion: @escaping (Song) -> Void)
     
     func validateTrack()
     func startTrackPlayback()
@@ -49,34 +48,21 @@ final class MusicPlayerPresenter: MusicPlayerViewPresenterProtocol {
         isTapped.toggle()
     }
     
-    func forwardButtonPressed(completion: @escaping (Song) -> Void) {
-        if trackIndex < playerManager.songsArray.count - 1 {
-            trackIndex += 1
+    func changeTrack(forward: Bool, completion: @escaping (Song) -> Void) {
+        if forward {
+            trackIndex = (trackIndex + 1) % playerManager.songsArray.count
         } else {
-            trackIndex = 0
+            trackIndex = (trackIndex - 1 + playerManager.songsArray.count) % playerManager.songsArray.count
         }
+        
         let nextSong = playerManager.songsArray[trackIndex]
         completion(nextSong)
         startTrackPlayback()
         isTapped = true
     }
     
-    func backButtonPressed(completion: @escaping (Song) -> Void) {
-        if trackIndex > 0 {
-            trackIndex -= 1
-        } else {
-            trackIndex = playerManager.songsArray.count - 1
-        }
-        let previousSong = playerManager.songsArray[trackIndex]
-        completion(previousSong)
-        startTrackPlayback()
-        isTapped = true
-    }
-    
     func validateTrack() {
-        if trackIndex == userDefaults.object(forKey: "index") as? Int && playerManager.player.isPlaying {
-            return
-        } else {
+        if trackIndex != userDefaults.integer(forKey: "index") || !playerManager.player.isPlaying {
             startTrackPlayback()
         }
     }

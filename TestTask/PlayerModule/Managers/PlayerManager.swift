@@ -10,6 +10,7 @@ import AVFoundation
 final class PlayerManager { 
     
     static let shared = PlayerManager()
+    
     private init() {}
     
     var player = AVAudioPlayer()

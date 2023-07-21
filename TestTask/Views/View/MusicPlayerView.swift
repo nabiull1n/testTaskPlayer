@@ -20,7 +20,7 @@ final class MusicPlayerView: UIView {
     
     weak var delegate: PlayerControlsViewDelegate?
     
-    let canselButton: UIButton = {
+    private let canselButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
@@ -32,21 +32,21 @@ final class MusicPlayerView: UIView {
         return button
     }()
     
-    let songTitleLabel: CustomLabel = {
+    private let songTitleLabel: CustomLabel = {
         let label = CustomLabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 22)
         return label
     }()
     
-    let performerLabel: CustomLabel = {
+    private let performerLabel: CustomLabel = {
         let label = CustomLabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
     
-    let currentTimeLabel: CustomLabel = {
+    private let currentTimeLabel: CustomLabel = {
         let label = CustomLabel()
         label.textAlignment = .left
         label.text = "00:00"
@@ -54,14 +54,14 @@ final class MusicPlayerView: UIView {
         return label
     }()
     
-    let songDurationLabel: CustomLabel = {
+    private let songDurationLabel: CustomLabel = {
         let label = CustomLabel()
         label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
     
-    let songDurationSlider: UISlider = {
+    private let songDurationSlider: UISlider = {
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.maximumValue = 100
@@ -86,7 +86,7 @@ final class MusicPlayerView: UIView {
         return button
     }()
     
-    let playButton: CustomButton = {
+    private let playButton: CustomButton = {
         let button = CustomButton(title: "pause")
         button.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         return button
@@ -146,6 +146,22 @@ final class MusicPlayerView: UIView {
         super.layoutSubviews()
         setConstraints()
     }
+    
+    func updatePlayButtonImage(_ result: String) {
+        playButton.setImage(UIImage(systemName: "\(result)"), for: .normal)
+    }
+    
+     func updateSongInformation(_ result: Song) {
+        songTitleLabel.text = result.songTitle
+        performerLabel.text = result.performer
+        songDurationLabel.text = result.duration
+    }
+    
+    func update(_ duration: Float, currentTime: Float, formattedTime: String) {
+        songDurationSlider.maximumValue = duration
+        songDurationSlider.value = currentTime
+        currentTimeLabel.text = formattedTime
+   }
     
     @objc func closeButtonTapped() {
         delegate?.playerDidTapCloseButton(self)

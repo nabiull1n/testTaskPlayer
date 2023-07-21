@@ -14,35 +14,54 @@ final class MusicPlayerViewController: UIViewController {
     private let playerManager = PlayerManager.shared
     private let playerView = MusicPlayerView()
     private var timer: Timer?
-    // MARK: loadView
+    
+    private var songInfo: Song? {
+        didSet {
+            if let songInfo = songInfo {
+                playerView.updateSongInformation(songInfo)
+            }
+        }
+    }
+    
+    private var updatePlayButtonImage: String? {
+        didSet {
+            if let updatePlayButtonImage = updatePlayButtonImage {
+                playerView.updatePlayButtonImage(updatePlayButtonImage)
+            }
+        }
+    }
+    // MARK: - loadView
     override func loadView() {
         super.loadView()
         view = playerView
     }
-    // MARK: viewDidLoad
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         presenter?.assignValues()
         presenter?.validateTrack()
     }
-    // MARK: viewWillAppear
+    // MARK: - viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updatePlayerView()
         startTimer()
     }
-    // MARK: viewDidDisappear
+    // MARK: - viewDidDisappear
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         stopTimer()
     }
     
     private func updatePlayerView() {
-        let formattedTime = updateFormattedTimeLabel(playerManager.player.currentTime)
-        playerView.songDurationSlider.maximumValue = Float(playerManager.player.duration)
-        playerView.songDurationSlider.value = Float(playerManager.player.currentTime)
-        playerView.currentTimeLabel.text = formattedTime
+        let player = playerManager.player
+        let currentTime = player.currentTime
+        let formattedTime = currentTime.formattedTimeString()
+        
+        playerView.update(Float(player.duration),
+                          currentTime: Float(currentTime),
+                          formattedTime: formattedTime)
     }
     
     private func setupView() {
@@ -57,33 +76,27 @@ final class MusicPlayerViewController: UIViewController {
         ])
     }
     
-    private func updateSongInformation(_ result: Song) {
-        playerView.songTitleLabel.text = result.songTitle
-        playerView.performerLabel.text = result.performer
-        playerView.songDurationLabel.text = result.duration
-    }
-    
-    private func updatePlayButtonImage(_ result: String) {
-        playerView.playButton.setImage(UIImage(systemName: "\(result)"), for: .normal)
-    }
-    
     private func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             
+            let currentTime = self.playerManager.player.currentTime
+            let duration = self.playerManager.player.duration
+            
             DispatchQueue.main.async {
-                let formattedTime = self.updateFormattedTimeLabel(self.playerManager.player.currentTime)
-                self.playerView.songDurationSlider.maximumValue = Float(self.playerManager.player.duration)
-                self.playerView.songDurationSlider.value = Float(self.playerManager.player.currentTime)
-                self.playerView.currentTimeLabel.text = formattedTime
+                let formattedTime = currentTime.formattedTimeString()
+                self.playerView.update(Float(duration),
+                                       currentTime: Float(currentTime),
+                                       formattedTime: formattedTime)
             }
             
-            if round(self.playerManager.player.currentTime) == round(self.playerManager.player.duration - 1) {
-                self.presenter?.forwardButtonPressed(completion: { [weak self] result in
+            let isEndOfSong = round(currentTime) == round(duration - 1)
+            if isEndOfSong {
+                self.presenter?.changeTrack(forward: true, completion: { [weak self] result in
                     guard let self = self else { return }
                     DispatchQueue.main.async {
-                        self.updateSongInformation(result)
-                        self.updatePlayButtonImage("pause")
+                        self.songInfo = result
+                        self.updatePlayButtonImage = "pause"
                     }
                 })
             }
@@ -94,20 +107,11 @@ final class MusicPlayerViewController: UIViewController {
         timer?.invalidate()
         timer = nil
     }
-    
-    private func updateFormattedTimeLabel(_ time: TimeInterval) -> String {
-        let minutes = Int(time / 60)
-        let seconds = Int(time.truncatingRemainder(dividingBy: 60))
-        let formattedTime = String(format: "%02d:%02d", minutes, seconds)
-        return formattedTime
-    }
 }
 
 extension MusicPlayerViewController: MusicPlayerViewProtocol {
     func assignValues(_ data: Song) {
-        playerView.songTitleLabel.text = data.songTitle
-        playerView.performerLabel.text = data.performer
-        playerView.songDurationLabel.text = data.duration
+        songInfo = data
     }
 }
 
@@ -116,27 +120,27 @@ extension MusicPlayerViewController: PlayerControlsViewDelegate {
         presenter?.playPauseButtonPressed(completion: { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.updatePlayButtonImage(result)
+                self.updatePlayButtonImage = result
             }
         })
     }
     
     func playerDidTapForwardButton(_ playerControlsView: MusicPlayerView) {
-        presenter?.forwardButtonPressed(completion: { [weak self] result in
+        presenter?.changeTrack(forward: true, completion: { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.updateSongInformation(result)
-                self.updatePlayButtonImage("pause")
+                self.songInfo = result
+                self.updatePlayButtonImage = "pause"
             }
         })
     }
     
     func playerDidTapBackwardButton(_ playerControlsView: MusicPlayerView) {
-        presenter?.backButtonPressed(completion: { [weak self] result in
+        presenter?.changeTrack(forward: false, completion: { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.updateSongInformation(result)
-                self.updatePlayButtonImage("pause")
+                self.songInfo = result
+                self.updatePlayButtonImage = "pause"
             }
         })
     }

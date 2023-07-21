@@ -41,9 +41,9 @@ final class SongTableViewCell: UITableViewCell {
         setConstraints()
     }
     
-    func dataAssignment (performer: String, song: String, duration: String) {
-        songTitleLabel.text = "\(performer) \(song)"
-        durationSongLabel.text = duration
+    func updateUI (_ song: Song) {
+        songTitleLabel.text = "\(song.performer) \(song.songTitle)"
+        durationSongLabel.text = song.duration
     }
 }
 // MARK: setConstraints

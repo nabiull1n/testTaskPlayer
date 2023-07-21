@@ -11,6 +11,7 @@
 		396516D22A406013005DE49A /* Eminem - Lose Your self.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 396516CF2A406013005DE49A /* Eminem - Lose Your self.mp3 */; };
 		396516D32A406013005DE49A /* Eminem Feat Nate Dogg - 'Till I Collapse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 396516D02A406013005DE49A /* Eminem Feat Nate Dogg - 'Till I Collapse.mp3 */; };
 		39A56A372A33032200ECBD5E /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A56A362A33032200ECBD5E /* PlayerManager.swift */; };
+		39AB00722A691D4500C850E6 /* ExtTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AB00712A691D4500C850E6 /* ExtTimeInterval.swift */; };
 		39B81C752A3051DB002FCD9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B81C742A3051DB002FCD9D /* AppDelegate.swift */; };
 		39B81C772A3051DB002FCD9D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B81C762A3051DB002FCD9D /* SceneDelegate.swift */; };
 		39B81C792A3051DB002FCD9D /* SongsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B81C782A3051DB002FCD9D /* SongsTableViewController.swift */; };
@@ -32,6 +33,7 @@
 		396516CF2A406013005DE49A /* Eminem - Lose Your self.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Eminem - Lose Your self.mp3"; sourceTree = "<group>"; };
 		396516D02A406013005DE49A /* Eminem Feat Nate Dogg - 'Till I Collapse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Eminem Feat Nate Dogg - 'Till I Collapse.mp3"; sourceTree = "<group>"; };
 		39A56A362A33032200ECBD5E /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
+		39AB00712A691D4500C850E6 /* ExtTimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtTimeInterval.swift; sourceTree = "<group>"; };
 		39B81C712A3051DB002FCD9D /* TestTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39B81C742A3051DB002FCD9D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39B81C762A3051DB002FCD9D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,7 +104,7 @@
 		39A56A472A375FF100ECBD5E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				39B81C782A3051DB002FCD9D /* SongsTableViewController.swift */,
+				39AB006C2A680B8100C850E6 /* Controller */,
 				39A56A492A37609E00ECBD5E /* Cells */,
 			);
 			path = Views;
@@ -148,6 +150,38 @@
 			path = Builders;
 			sourceTree = "<group>";
 		};
+		39AB006C2A680B8100C850E6 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				39B81C782A3051DB002FCD9D /* SongsTableViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		39AB006D2A68151100C850E6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				39B81C992A308895002FCD9D /* MusicPlayerView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		39AB006F2A68152400C850E6 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				39B81C9B2A30891F002FCD9D /* MusicPlayerViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		39AB00702A691D0800C850E6 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				39AB00712A691D4500C850E6 /* ExtTimeInterval.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		39B81C682A3051DB002FCD9D = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +203,7 @@
 			children = (
 				39A56A452A375FA600ECBD5E /* MainModule */,
 				39A56A442A375F6D00ECBD5E /* PlayerModule */,
+				39A56A4D2A37623600ECBD5E /* Builders */,
 				39B81C892A305268002FCD9D /* Application */,
 				39B81C882A30524B002FCD9D /* Resources */,
 			);
@@ -178,7 +213,7 @@
 		39B81C882A30524B002FCD9D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				39A56A4D2A37623600ECBD5E /* Builders */,
+				39AB00702A691D0800C850E6 /* Extension */,
 				39A56A382A33079800ECBD5E /* Audio */,
 				39B81C7D2A3051DC002FCD9D /* Assets.xcassets */,
 				39B81C7F2A3051DC002FCD9D /* LaunchScreen.storyboard */,
@@ -199,10 +234,10 @@
 		39B81C8B2A30528C002FCD9D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				39AB006D2A68151100C850E6 /* View */,
+				39AB006F2A68152400C850E6 /* Controller */,
 				39B81C942A3053A8002FCD9D /* CustomLabel */,
 				39B81C932A305394002FCD9D /* CustomButton */,
-				39B81C992A308895002FCD9D /* MusicPlayerView.swift */,
-				39B81C9B2A30891F002FCD9D /* MusicPlayerViewController.swift */,
 			);
 			name = Views;
 			path = ../Views;
@@ -302,6 +337,7 @@
 				39B81C792A3051DB002FCD9D /* SongsTableViewController.swift in Sources */,
 				39B81CA22A30C551002FCD9D /* MusicPlayerPresenter.swift in Sources */,
 				39B81C902A30534D002FCD9D /* SongStruct.swift in Sources */,
+				39AB00722A691D4500C850E6 /* ExtTimeInterval.swift in Sources */,
 				39B81C962A3053D5002FCD9D /* CustomLabel.swift in Sources */,
 				39B81C982A3053E5002FCD9D /* CustomButton.swift in Sources */,
 				39B81C752A3051DB002FCD9D /* AppDelegate.swift in Sources */,

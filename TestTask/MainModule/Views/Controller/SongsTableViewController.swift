@@ -60,10 +60,10 @@ extension SongsTableViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SongTableViewCell.identifer,
                                                        for: indexPath) as? SongTableViewCell else
                                                        { return UITableViewCell() }
-        let performer = songsArray[indexPath.row].performer
-        let song = songsArray[indexPath.row].songTitle
-        let duration = songsArray[indexPath.row].duration
-        cell.dataAssignment(performer: performer, song: song, duration: duration)
+        let song = songsArray[indexPath.row]
+       
+        cell.updateUI(song)
+        
         return cell
     }
 }
